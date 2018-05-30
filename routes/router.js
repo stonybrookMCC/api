@@ -1,4 +1,5 @@
 const creator = require('./builder');
+const config = require('../config');
 
 module.exports = async (app, db) => {
     app.post('/register', (req, res) => {
@@ -9,7 +10,7 @@ module.exports = async (app, db) => {
                 res.send(`An error has occured: ${err}`)
             }
 
-            if(data[0]) {
+            if(data) {
                 res.send(`already registered`);
                 return;
             };
@@ -21,5 +22,17 @@ module.exports = async (app, db) => {
                 res.send(newDoc);
             });
         });
+    });
+
+    app.get('/db', (req, res) => {
+        var auth = req.get('Authorization');
+
+        if(config.auth.includes(auth)) {
+            db.find({}, (err, data) => {
+                res.send(data);
+            });
+        } else {
+            res.send(`This is not the endpoint you are looking for.`);
+        };
     });
 };

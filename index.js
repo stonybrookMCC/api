@@ -14,5 +14,5 @@ const port = 8000;
 
 app.listen(port, () => {
   db.loadDatabase();
-  console.log('We are live on ' + port);
+  console.log('API is online on port ' + port);
 });

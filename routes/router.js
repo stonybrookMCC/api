@@ -6,16 +6,19 @@ module.exports = async (app, db) => {
 
         db.registered.find({name: person.name}, (err, data) => {
             if(err) {
+                res.status(500);
                 res.send(`An error has occured: ${err}`)
             }
 
             if(data[0]) {
+                res.status(403);
                 res.send(`already registered`);
                 return;
             };
 
             db.registered.insert(person, (err, newDoc) => {
                 if(err) {
+                    res.status(500);
                     res.send(`An error has occured: ${err}`)
                 }
                 res.send(newDoc);
@@ -36,9 +39,11 @@ module.exports = async (app, db) => {
 
             if(authorized.includes(auth)) {
                 db.registered.find({}, (err, data) => {
+                    res.status(200);
                     res.send(data);
                 });
             } else {
+                res.status(400);
                 res.send(`This is not the endpoint you are looking for.`);
             };
         });

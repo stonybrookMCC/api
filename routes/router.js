@@ -27,17 +27,17 @@ module.exports = async (app, db) => {
     });
 
     app.get('/db', (req, res) => {
-        var auth = req.get('Authorization');
+        var authorization = req.get('Authorization');
 
-        db.staff.find({type: "Admin"}, (err, data) => {
+        db.staff.find({}, (err, data) => {
             var authorized = [];
             var x;
 
             for(var i = 0; i < data.length; i++) {
-                authorized.push(data[i].auth);
+                authorized.push(data[i].authorizeCode);
             }
 
-            if(authorized.includes(auth)) {
+            if(authorized.includes(authorization)) {
                 db.registered.find({}, (err, data) => {
                     res.status(200);
                     res.send(data);

@@ -1,33 +1,33 @@
 const creator = require('./builder');
 
 module.exports = async (app, db) => {
-    app.post('/register', (req, res) => {
-        var person = creator(req.body);
+    app.post('/register', (request, response) => {
+        var person = creator(request.body);
 
         db.registered.find({name: person.name}, (err, data) => {
             if(err) {
-                res.status(500);
-                res.send(`An error has occured: ${err}`)
+                response.status(500);
+                response.send(`An error has occured: ${err}`)
             }
 
             if(data[0]) {
-                res.status(403);
-                res.send(`already registered`);
+                response.status(403);
+                response.send(`already registered`);
                 return;
             };
 
             db.registered.insert(person, (err, newDoc) => {
                 if(err) {
-                    res.status(500);
-                    res.send(`An error has occured: ${err}`)
+                    response.status(500);
+                    response.send(`An error has occured: ${err}`)
                 }
-                res.send(newDoc);
+                response.send(newDoc);
             });
         });
     });
 
-    app.get('/db', (req, res) => {
-        var authorization = req.get('Authorization');
+    app.get('/db', (request, response) => {
+        var authorization = request.get('Authorization');
 
         db.staff.find({}, (err, data) => {
             var authorized = [];
@@ -39,12 +39,12 @@ module.exports = async (app, db) => {
 
             if(authorized.includes(authorization)) {
                 db.registered.find({}, (err, data) => {
-                    res.status(200);
-                    res.send(data);
+                    response.status(200);
+                    response.send(data);
                 });
             } else {
-                res.status(400);
-                res.send(`This is not the endpoint you are looking for.`);
+                response.status(401);
+                response.send(`This is not the endpoint you are looking for.`);
             };
         });
     });

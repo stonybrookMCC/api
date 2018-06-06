@@ -14,7 +14,10 @@ const port = 8000;
 
 app.listen(port, () => {
   db.registered.loadDatabase();
+  db.registered.persistence.setAutocompactionInterval(10000);
+
   db.staff.loadDatabase();
+  db.staff.persistence.setAutocompactionInterval(10000);
   
   console.log('API is online on port ' + port);
 });

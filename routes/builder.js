@@ -1,11 +1,17 @@
 module.exports = function build(data) {
-    var name = data.name.toLowerCase();
     var info = {
         person: {
-            name: name,
-            parent: data.parent,
+            name: {
+                first: data.nameFirst.toLowerCase(),
+                last: data.nameLast.toLowerCase()
+            },
+            parent: {
+                first: data.parentFirst.toLowerCase(),
+                last: data.parentLast.toLowerCase()
+            },
             email: data.email,
             paid: false,
+            session: data.session,
             regTime: new Date()
         }
     }

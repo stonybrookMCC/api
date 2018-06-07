@@ -7,9 +7,9 @@ module.exports = async (app, db) => {
     });
 
     app.post('/register', (request, response) => {
-        var person = creator(request.body);
+        var builder = creator(request.body);
 
-        db.registered.find({name: person.name}, (err, data) => {
+        db.registered.find({"person.name": builder.person.name}, (err, data) => {
             if(err) {
                 response.status(500);
                 console.log(`${Date.now()} - ${err}`);
@@ -22,7 +22,7 @@ module.exports = async (app, db) => {
                 return;
             };
 
-            db.registered.insert(person, (err, newDoc) => {
+            db.registered.insert(builder, (err, newDoc) => {
                 if(err) {
                     response.status(500);
                     console.log(`${Date.now()} - ${err}`);

@@ -57,7 +57,6 @@ module.exports = async (app, db) => {
     });
 
     app.put('/register', (request, response) => {
-        var authorization = request.get('Authorization');
         var builder = creator(request.body);
 
         db.registered.find({"person.name": builder.person.name}, (err, data) => {

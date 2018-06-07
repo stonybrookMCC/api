@@ -1,4 +1,4 @@
-module.exports = function build(data) {
+function makeRegistered(data) {
     var info = {
         person: {
             name: {
@@ -18,3 +18,24 @@ module.exports = function build(data) {
 
     return info;
 }
+
+function checkAuthorization(db, authorization) {
+    return new Promise((resolve, reject) => {
+        db.staff.find({}, (err, data) => {
+            var authorized = [];
+            var x;
+            
+            for(var i = 0; i < data.length; i++) {
+                authorized.push(data[i].authorizeCode);
+            }
+            console.log(authorized + " authed")
+            if(authorized.includes(authorization)) {
+                resolve(true);
+            } else {
+                resolve(false);
+            };
+        });
+    });
+}
+
+module.exports = { makeRegistered, checkAuthorization }

@@ -1,6 +1,8 @@
-const creator = require('./builder');
+const creator = require('./builder').makeRegistered;
+const authenticate = require('./builder').checkAuthorization;
 
 module.exports = async (app, db) => {
+
     app.get('/', (request, response) => {
         response.status(404);
         response.send('Nope');
@@ -33,27 +35,19 @@ module.exports = async (app, db) => {
         });
     });
 
-    app.get('/db', (request, response) => {
+    app.get('/db', async (request, response) => {
         var authorization = request.get('Authorization');
+        var authorized = await authenticate(db, authorization);
 
-        db.staff.find({}, (err, data) => {
-            var authorized = [];
-            var x;
-
-            for(var i = 0; i < data.length; i++) {
-                authorized.push(data[i].authorizeCode);
-            }
-
-            if(authorized.includes(authorization)) {
-                db.registered.find({}, (err, data) => {
-                    response.status(200);
-                    response.send(data);
-                });
-            } else {
-                response.status(401);
-                response.send(`This is not the endpoint you are looking for.`);
-            };
-        });
+        if(authorized) {
+            db.registered.find({}, (err, data) => {
+                response.status(200);
+                response.send(data);
+            });
+        } else {
+            response.status(401);
+            response.send(`This is not the endpoint you are looking for.`);
+        };
     });
 
     app.put('/register', (request, response) => {

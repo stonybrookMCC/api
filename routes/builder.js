@@ -28,7 +28,7 @@ function checkAuthorization(db, authorization) {
             for(var i = 0; i < data.length; i++) {
                 authorized.push(data[i].authorizeCode);
             }
-            console.log(authorized + " authed")
+            
             if(authorized.includes(authorization)) {
                 resolve(true);
             } else {

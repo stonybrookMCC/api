@@ -1,5 +1,6 @@
 const creator = require('./builder').makeRegistered;
 const authenticate = require('./builder').checkAuthorization;
+const email = require('./builder').sendEmail;
 
 module.exports = async (app, db) => {
 
@@ -31,6 +32,7 @@ module.exports = async (app, db) => {
                     response.send(`An error has occured, logged in console.`);
                 }
                 response.send(newDoc);
+                email(db, builder);
             });
         });
     });

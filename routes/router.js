@@ -59,7 +59,7 @@ module.exports = async (app, db) => {
             if (data[0]) {
                 db.registered.update({"person.name": builder.person.name}, {$set: builder}, (err, replaced) => {
                     response.status(200);
-                    response.send(`Updated ${builder.person.name}'s information`);
+                    response.send(`Updated ${builder.person.name.first}'s information`);
                 });
             } else {
                 response.send(`No user was found, make sure you're using the right name`);

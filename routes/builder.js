@@ -14,7 +14,7 @@ function makeRegistered(data) {
                 email: data.email
             },
             paid: false,
-            session: data.session,
+            session: data.session || "not specified",
             regTime: new Date()
         }
     }
@@ -25,7 +25,6 @@ function checkAuthorization(db, authorization) {
     return new Promise((resolve, reject) => {
         db.staff.find({}, (err, data) => {
             var authorized = [];
-            var x;
             
             for(var i = 0; i < data.length; i++) {
                 authorized.push(data[i].authorizeCode);
@@ -34,7 +33,7 @@ function checkAuthorization(db, authorization) {
             if(authorized.includes(authorization)) {
                 resolve(true);
             } else {
-                resolve(false);
+                reject(false);
             };
         });
     });

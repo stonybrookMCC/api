@@ -1,17 +1,18 @@
 const nodemailer = require('nodemailer');
 const config = require('../config');
+const request = require('request');
 
 function makeRegistered(data) {
     var info = {
         person: {
             name: {
-                first: data.nameFirst.toLowerCase(),
-                last: data.nameLast.toLowerCase()
+                first: data.studentFirst.toLowerCase(),
+                last: data.studentLast.toLowerCase()
             },
             parent: {
                 first: data.parentFirst.toLowerCase(),
                 last: data.parentLast.toLowerCase(),
-                email: data.email
+                email: data.parentEmail
             },
             paid: false,
             session: data.session || "not specified",
@@ -64,4 +65,4 @@ function sendEmail(db, builder) {
     });
 };
 
-module.exports = { makeRegistered, checkAuthorization, sendEmail }
+module.exports = { makeRegistered, checkAuthorization, sendEmail };

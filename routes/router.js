@@ -9,7 +9,7 @@ module.exports = async (app, db) => {
         response.send('Nope');
     });
 
-    app.post('/register', (request, response) => {
+    app.get('/register', (request, response) => {
         var builder = creator(request.query);
 
         db.registered.find({"person.name": builder.person.name}, (err, data) => {
@@ -53,7 +53,7 @@ module.exports = async (app, db) => {
     });
 
     app.put('/register', (request, response) => {
-        var builder = creator(request.body);
+        var builder = creator(request.query);
 
         db.registered.find({"person.name": builder.person.name}, (err, data) => {
             if (data[0]) {

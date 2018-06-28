@@ -12,6 +12,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "nedb": "^1.8.0",
-    "nodemailer": "^4.6.5"
+    "nodemailer": "^4.6.5",
+    "request": "^2.87.0"
   }
 }

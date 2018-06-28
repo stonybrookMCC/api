@@ -10,7 +10,7 @@ module.exports = async (app, db) => {
     });
 
     app.post('/register', (request, response) => {
-        var builder = creator(request.body);
+        var builder = creator(request.query);
 
         db.registered.find({"person.name": builder.person.name}, (err, data) => {
             if(err) {

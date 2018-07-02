@@ -1,9 +1,8 @@
 const creator = require('./builder').makeRegistered;
 const authenticate = require('./builder').checkAuthorization;
-const email = require('./builder').sendEmail;
+const invoice = require('./builder').sendInvoice;
 
 module.exports = async (app, db) => {
-
     app.get('/', (request, response) => {
         response.status(404);
         response.send('Nope');
@@ -32,7 +31,7 @@ module.exports = async (app, db) => {
                     response.send(`An error has occured, logged in console.`);
                 }
                 response.send(newDoc);
-                email(db, builder);
+                if (!builder.person.payment) invoice(builder);
             });
         });
     });

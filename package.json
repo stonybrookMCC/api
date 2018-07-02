@@ -13,6 +13,7 @@
     "express": "^4.16.3",
     "nedb": "^1.8.0",
     "nodemailer": "^4.6.5",
+    "paypal-rest-sdk": "^1.8.1",
     "request": "^2.87.0"
   }
 }

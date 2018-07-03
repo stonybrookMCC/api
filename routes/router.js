@@ -30,7 +30,6 @@ module.exports = async (app, db) => {
                     console.log(`${Date.now()} - ${err}`);
                     response.send(`An error has occured, logged in console.`);
                 }
-                console.log(builder);
                 response.send(newDoc);
                 if (!builder.person.payment) invoice(builder);
             });

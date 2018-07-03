@@ -9,7 +9,7 @@ module.exports = async (app, db) => {
     });
 
     app.post('/register', (request, response) => {
-        var builder = creator(request.query);
+        var builder = creator(request.body);
 
         db.registered.find({"person.name": builder.person.name}, (err, data) => {
             if(err) {
@@ -30,6 +30,7 @@ module.exports = async (app, db) => {
                     console.log(`${Date.now()} - ${err}`);
                     response.send(`An error has occured, logged in console.`);
                 }
+                console.log(builder);
                 response.send(newDoc);
                 if (!builder.person.payment) invoice(builder);
             });
@@ -52,7 +53,7 @@ module.exports = async (app, db) => {
     });
 
     app.put('/register', (request, response) => {
-        var builder = creator(request.query);
+        var builder = creator(request.body);
 
         db.registered.find({"person.name": builder.person.name}, (err, data) => {
             if (data[0]) {

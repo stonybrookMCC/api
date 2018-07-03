@@ -7,7 +7,7 @@ db = {};
 db.registered = new database('./database/registered.db');
 db.staff = new database('./database/staff.db');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 require('./routes')(app, db, {});
 
 const port = 8000;

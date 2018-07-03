@@ -13,12 +13,14 @@ function makeRegistered(data) {
         person: {
             name: {
                 first: data.studentFirst.toLowerCase(),
-                last: data.studentLast.toLowerCase()
+                last: data.studentLast.toLowerCase(),
+                grade: data.studentGrade
             },
             parent: {
                 first: data.parentFirst.toLowerCase(),
                 last: data.parentLast.toLowerCase(),
-                email: data.parentEmail
+                email: data.parentEmail,
+                number: data.parentNumber
             },
             payment: data.paymentID || null,
             session: data.session,

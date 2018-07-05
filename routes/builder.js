@@ -11,7 +11,7 @@ paypal.configure({
 function makeRegistered(data) {
     var info = {
         person: {
-            name: {
+            student: {
                 first: data.studentFirst.toLowerCase(),
                 last: data.studentLast.toLowerCase(),
                 grade: data.studentGrade
@@ -97,6 +97,13 @@ function sendInvoice(data) {
             throw error;
         } else {
             console.log(`Created an invoice for ${data.person.parent.first}`);
+            paypal.invoice.send(_invoice.id, function (error, response) {
+                if (error) {
+                    throw error;
+                } else {
+                    console.log(`Sent invoice for ${data.person.parent.first}`);
+                }
+            });
         }
     });
 };

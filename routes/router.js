@@ -11,7 +11,7 @@ module.exports = async (app, db) => {
     app.post('/register', (request, response) => {
         var builder = creator(request.body);
 
-        db.registered.find({"person.name": builder.person.name}, (err, data) => {
+        db.registered.find({"person.student": builder.person.student}, (err, data) => {
             if(err) {
                 response.status(500);
                 console.log(`${Date.now()} - ${err}`);
@@ -30,6 +30,7 @@ module.exports = async (app, db) => {
                     console.log(`${Date.now()} - ${err}`);
                     response.send(`An error has occured, logged in console.`);
                 }
+                response.status(201)
                 response.send(newDoc);
                 if (!builder.person.payment) invoice(builder);
             });
@@ -54,11 +55,11 @@ module.exports = async (app, db) => {
     app.put('/register', (request, response) => {
         var builder = creator(request.body);
 
-        db.registered.find({"person.name": builder.person.name}, (err, data) => {
+        db.registered.find({"person.student": builder.person.student}, (err, data) => {
             if (data[0]) {
-                db.registered.update({"person.name": builder.person.name}, {$set: builder}, (err, replaced) => {
+                db.registered.update({"person.student": builder.person.student}, {$set: builder}, (err, replaced) => {
                     response.status(200);
-                    response.send(`Updated ${builder.person.name.first}'s information`);
+                    response.send(`Updated ${builder.person.student.first}'s information`);
                 });
             } else {
                 response.send(`No user was found, make sure you're using the right name`);

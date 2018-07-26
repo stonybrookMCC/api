@@ -10,22 +10,14 @@ paypal.configure({
 
 function makeRegistered(data) {
     var info = {
-        person: {
-            student: {
-                first: data.studentFirst.toLowerCase(),
-                last: data.studentLast.toLowerCase(),
-                grade: data.studentGrade
-            },
-            parent: {
-                first: data.parentFirst.toLowerCase(),
-                last: data.parentLast.toLowerCase(),
-                email: data.parentEmail,
-                number: data.parentNumber
-            },
-            payment: data.paymentID || null,
-            session: data.session,
-            regTime: new Date()
-        }
+        studentName: data.studentName.toLowerCase(),
+        studentGrade: data.studentGrade,
+        parentName: data.parentName.toLowerCase(),
+        parentEmail: data.parentEmail,
+        parentNumber: data.parentNumber,
+        session: data.session,
+        paymentID: data.paymentID,
+        registerTime: new Date()
     }
     return info;
 };
@@ -74,12 +66,13 @@ function checkAuthorization(db, authorization) {
 // };
 
 function sendInvoice(data) {
+    var name = data.parentName.split(" ");
     var invoice = {
         "merchant_info": config.paypal.merchant_info,
         "billing_info": [{
-            "email": data.person.parent.email,
-            "first_name": data.person.parent.first,
-            "last_name": data.person.parent.last
+            "email": data.parentEmail,
+            "first_name": name[0],
+            "last_name": name[1]
         }],
         "items": [{
             "name": "Minecraft Club Session",
@@ -96,12 +89,12 @@ function sendInvoice(data) {
         if (error) {
             throw error;
         } else {
-            console.log(`Created an invoice for ${data.person.parent.first}`);
+            console.log(`Created an invoice for ${data.parentName}`);
             paypal.invoice.send(_invoice.id, function (error, response) {
                 if (error) {
                     throw error;
                 } else {
-                    console.log(`Sent invoice for ${data.person.parent.first}`);
+                    console.log(`Sent invoice for ${data.parentName}`);
                 }
             });
         }

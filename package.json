@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "jsonexport": "^2.2.1",
     "nedb": "^1.8.0",
     "nodemailer": "^4.6.5",
     "paypal-rest-sdk": "^1.8.1",

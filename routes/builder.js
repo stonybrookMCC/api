@@ -34,7 +34,7 @@ function checkAuthorization(db, authorization) {
             if(authorized.includes(authorization)) {
                 resolve(true);
             } else {
-                reject(false);
+                resolve(false);
             };
         });
     });

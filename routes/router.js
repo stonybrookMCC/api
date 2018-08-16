@@ -40,16 +40,56 @@ module.exports = async (app, db) => {
     });
 
     app.get('/db', async (request, response) => {
+        var body = request.body;
         var authorization = request.get('Authorization');
         var authorized = await authenticate(db, authorization);
 
         if(authorized) {
-            db.registered.find({}, (err, data) => {
-                jsonexport(data, function(err, csv) {
-                    response.status(200);
-                    response.send(csv);
+            if(body.search) {
+                db.registered.find({ [body.search.key] : body.search.value}, (err, data) => {
+                    switch(body.search.type) {
+                        case "json": {
+                            response.status(200);
+                            response.send(data);
+                            return;
+                        }
+                        case "csv": {
+                            jsonexport(data, function(err, csv) {
+                                response.status(200);
+                                response.send(csv);
+                                return;
+                            });
+                        }
+                        case undefined: {
+                            response.status(400);
+                            response.send();
+                            return;
+                        }
+                    }
                 });
-            });
+            } else {
+                db.registered.find({}, (err, data) => {
+                    switch(body.search.type) {
+                        case "json": {
+                            response.status(200);
+                            response.send(data);
+                            return;
+                        }
+                        case "csv": {
+                            jsonexport(data, function(err, csv) {
+                                response.status(200);
+                                response.send(csv);
+                                return;
+                            });
+                        }
+                        case undefined: {
+                            response.status(400);
+                            response.send();
+                            return;
+                        }
+                    }
+                });
+            }
         } else {
             response.status(401);
             response.send(`This is not the endpoint you are looking for.`);

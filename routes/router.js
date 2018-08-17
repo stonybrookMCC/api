@@ -69,7 +69,7 @@ module.exports = async (app, db) => {
                 });
             } else {
                 db.registered.find({}, (err, data) => {
-                    switch(body.search.type) {
+                    switch(body.type) {
                         case "json": {
                             response.status(200);
                             response.send(data);

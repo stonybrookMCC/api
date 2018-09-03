@@ -127,12 +127,8 @@ module.exports = async (app, db) => {
                 response.status(500);
                 response.send(`An error occured`);
             }
-            var newTweets = [];
-            for(var tweet in tweets) {
-                newTweets.push(tweets[tweet])
-            }
-
-            response.send(newTweets)
+            
+            response.send(tweets);
         })
     });
 }

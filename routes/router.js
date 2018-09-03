@@ -1,6 +1,8 @@
 const creator = require('./builder').makeRegistered;
 const authenticate = require('./builder').checkAuthorization;
 const invoice = require('./builder').sendInvoice;
+const Twitter = require('twitter');
+const config = require('../config.json')
 
 var jsonexport = require('jsonexport');
 
@@ -47,7 +49,7 @@ module.exports = async (app, db) => {
         if(authorized) {
             if(body.search) {
                 db.registered.find({ [body.search.key] : body.search.value}, (err, data) => {
-                    switch(body.search.type) {
+                    switch(body.type) {
                         case "json": {
                             response.status(200);
                             response.send(data);
@@ -110,4 +112,27 @@ module.exports = async (app, db) => {
             }
         });
     });
-};
+
+    app.get('/twitter', (request, response) => {
+        var client = new Twitter({
+            consumer_key: config.twitter.consumer_key,
+            consumer_secret: config.twitter.consumer_secret,
+            access_token_key: config.twitter.access_token_key,
+            access_token_secret: config.twitter.access_token_secret
+        });
+        
+        var params = {screen_name: "SBMCClub"}
+        client.get('statuses/user_timeline', params, (error, tweets, _response) => {
+            if(error) {
+                response.status(500);
+                response.send(`An error occured`);
+            }
+            var newTweets = [];
+            for(var tweet in tweets) {
+                newTweets.push(tweets[tweet])
+            }
+
+            response.send(newTweets)
+        })
+    });
+}
